@@ -1,4 +1,4 @@
-<img src="/docs/logo.png" alt="koa middleware framework for nodejs"/>
+<img src="logo.png" alt="用于 nodejs 的 koa 中间件框架"/>
 
   [![gitter][gitter-image]][gitter-url]
   [![NPM version][npm-image]][npm-url]
@@ -7,16 +7,15 @@
   [![OpenCollective Backers][backers-image]](#backers)
   [![OpenCollective Sponsors][sponsors-image]](#sponsors)
 
-  Expressive HTTP middleware framework for node.js to make web applications and APIs more enjoyable to write. Koa's middleware stack flows in a stack-like manner, allowing you to perform actions downstream then filter and manipulate the response upstream.
+用 node.js 来实现 HTTP 的中间件框架，让 Web 应用程序和 API 可以更加愉快地编写。Koa 的中间件堆栈以类似堆栈的方式流动，允许您执行下游操作，然后过滤并操纵上游的响应。
 
-  Only methods that are common to nearly all HTTP servers are integrated directly into Koa's small ~570 SLOC codebase. This
-  includes things like content negotiation, normalization of node inconsistencies, redirection, and a few others.
+几乎所有 HTTP 服务器通用的方法都被直接集成到 Koa 大约570行源码的代码库中。其中包括比如内容协商，规范节点不一致性，重定向等其它操作。
 
-  Koa is not bundled with any middleware.
+Koa没有捆绑任何中间件。
 
-## Installation
+## 安装
 
-Koa requires __node v7.6.0__ or higher for ES2015 and async function support.
+Koa 依赖 __node v7.6.0__ 或 ES2015及更高版本和同步方法支持.
 
 ```
 $ npm install koa
@@ -28,7 +27,7 @@ $ npm install koa
 const Koa = require('koa');
 const app = new Koa();
 
-// response
+// 响应
 app.use(ctx => {
   ctx.body = 'Hello Koa';
 });
@@ -36,21 +35,21 @@ app.use(ctx => {
 app.listen(3000);
 ```
 
-## Getting started
+## 入门
 
- - [Kick-Off-Koa](https://github.com/koajs/kick-off-koa) - An intro to koa via a set of self-guided workshops.
- - [Workshop](https://github.com/koajs/workshop) - A workshop to learn the basics of koa, Express' spiritual successor.
- - [Introduction Screencast](http://knowthen.com/episode-3-koajs-quickstart-guide/) - An introduction to installing and getting started with Koa
+ - [Kick-Off-Koa](https://github.com/koajs/kick-off-koa) - 通过一系列自身指引的讲解介绍了 Koa。
+ - [Workshop](https://github.com/koajs/workshop) - 通过学习 Koa 的讲解，快速领会精髓。
+ - [Introduction Screencast](http://knowthen.com/episode-3-koajs-quickstart-guide/) - 关于 Koa 安装入门的介绍。
 
 
-## Middleware
+## 中间件
 
-Koa is a middleware framework that can take two different kinds of functions as middleware:
+Koa 是一个中间件框架，可以将两种不同的功能作为中间件：
 
   * async function
   * common function
 
-Here is an example of logger middleware with each of the different functions:
+以下是每个不同功能记录器的中间件示例：
 
 ### ___async___ functions (node v7.6+)
 
@@ -66,8 +65,8 @@ app.use(async (ctx, next) => {
 ### Common function
 
 ```js
-// Middleware normally takes two parameters (ctx, next), ctx is the context for one request,
-// next is a function that is invoked to execute the downstream middleware. It returns a Promise with a then function for running code after completion.
+// 中间件通常带有两个参数 (ctx, next), ctx 是一个请求的上下文,
+// next 是调用执行下游中间件的函数. 在代码执行完成后通过 then 方法返回一个 Promise.
 
 app.use((ctx, next) => {
   const start = Date.now();
@@ -78,53 +77,43 @@ app.use((ctx, next) => {
 });
 ```
 
-### Koa v1.x Middleware Signature
+### Koa v1.x 中间件签名
 
-The middleware signature changed between v1.x and v2.x.  The older signature is deprecated.
+中间件签名在 v1.x 和 v2.x 之间已经被更改. 旧的签名已经被弃用.
 
-**Old signature middleware support will be removed in v3**
+**旧的签名中间件支持将在 v3 中删除**
 
-Please see the [Migration Guide](docs/migration.md) for more information on upgrading from v1.x and
-using v1.x middleware with v2.x.
+请参阅 [迁移指南](migration.md) 获取有关从 v1.x 升级并使用 v2.x 中间件的更多信息。
 
-## Context, Request and Response
+## 上下文, 请求和响应
 
-Each middleware receives a Koa `Context` object that encapsulates an incoming
-http message and the corresponding response to that message.  `ctx` is often used
-as the parameter name for the context object.
+每个中间件都接收一个 Koa 的 `Context` 对象，该对象封装了一个传入的 http 消息，并对该消息进行了相应的响应。 `ctx` 通常用作上下文对象的参数名称。
 
 ```js
 app.use(async (ctx, next) => { await next(); });
 ```
 
-Koa provides a `Request` object as the `request` property of the `Context`.  
-Koa's `Request` object provides helpful methods for working with
-http requests which delegate to an [IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage)
-from the node `http` module.
+Koa 提供了一个 `Request` 对象作为 `Context` 的 `request` 属性。
+Koa的 `Request` 对象提供了用于处理 http 请求的方法，该请求委托给 node `http` 模块的[IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage)。
 
-Here is an example of checking that a requesting client supports xml.
+这是一个检查请求客户端 xml 支持的示例。
 
 ```js
 app.use(async (ctx, next) => {
   ctx.assert(ctx.request.accepts('xml'), 406);
-  // equivalent to:
+  // 相当于:
   // if (!ctx.request.accepts('xml')) ctx.throw(406);
   await next();
 });
 ```
 
-Koa provides a `Response` object as the `response` property of the `Context`.  
-Koa's `Response` object provides helpful methods for working with
-http responses which delegate to a [ServerResponse](https://nodejs.org/api/http.html#http_class_http_serverresponse)
-.  
+Koa提供了一个 `Response` 对象作为 `Context` 的 `response` 属性。
+Koa的 `Response` 对象提供了用于处理 http 响应的方法，该响应委托给 [ServerResponse](https://nodejs.org/api/http.html#http_class_http_serverresponse)。
 
-Koa's pattern of delegating to Node's request and response objects rather than extending them
-provides a cleaner interface and reduces conflicts between different middleware and with Node
-itself as well as providing better support for stream handling.  The `IncomingMessage` can still be
-directly accessed as the `req` property on the `Context` and `ServerResponse` can be directly
-accessed as the `res` property on the `Context`.
+Koa 对 Node 的请求和响应对象进行委托而不是扩展它们。这种模式提供了更清晰的接口，并减少了不同中间件与 Node 本身之间的冲突，并为流处理提供了更好的支持。
+`IncomingMessage` 仍然可以直接被访问，因为 `Context` 和 `ServerResponse` 上的 `req` 属性可以直接作为 `Context` 上的 `res` 属性访问。
 
-Here is an example using Koa's `Response` object to stream a file as the response body.
+这里是一个使用 Koa 的 `Response` 对象将文件作为响应体流式传输的示例。
 
 ```js
 app.use(async (ctx, next) => {
@@ -134,46 +123,42 @@ app.use(async (ctx, next) => {
 });
 ```
 
-The `Context` object also provides shortcuts for methods on its `request` and `response`.  In the prior
-examples,  `ctx.type` can be used instead of `ctx.request.type` and `ctx.accepts` can be used
-instead of `ctx.request.accepts`.
+`Context` 对象还提供了其 `request` 和 `response` 方法的快捷方式。在前面的例子中，可以使用 `ctx.type` 而不是 `ctx.request.type`，而 `ctx.accepts` 可以用来代替 `ctx.request.accepts`。
 
-For more information on `Request`, `Response` and `Context`, see the [Request API Reference](docs/api/request.md),
-[Response API Reference](docs/api/response.md) and [Context API Reference](docs/api/context.md).
+关于 `Request`, `Response` 和 `Context` 更多详细信息, 参阅 [请求 API 参考](api/request.md),
+[响应 API 参考](api/response.md) 和 [上下文 API 参考](api/context.md).
 
-## Koa Application
+## Koa 应用程序
 
-The object created when executing `new Koa()` is known as the Koa application object.
+在执行 `new Koa()` 时创建的对象被称为 Koa 应用程序对象。
 
-The application object is Koa's interface with node's http server and handles the registration
-of middleware, dispatching to the middleware from http, default error handling, as well as
-configuration of the context, request and response objects.
+应用对象是 Koa 与 node 的 http 服务器和处理中间件注册的接口，从 http 发送到中间件，默认错误处理，以及上下文，请求和响应对象的配置。
 
-Learn more about the application object in the [Application API Reference](docs/api/index.md).
+了解有关应用程序对象的更多信息请到 [应用 API 参考](api/index.md).
 
-## Documentation
+## 文档
 
- - [Usage Guide](docs/guide.md)
- - [Error Handling](docs/error-handling.md)
- - [Koa for Express Users](docs/koa-vs-express.md)
- - [FAQ](docs/faq.md)
- - [API documentation](docs/api/index.md)
+ - [使用指南](guide.md)
+ - [错误处理](error-handling.md)
+ - [Koa 与 Express](koa-vs-express.md)
+ - [FAQ](faq.md)
+ - [API 文档](api/index.md)
 
-## Babel setup
+## Babel 配置
 
-If you're not using `node v7.6+`, we recommend setting up `babel` with [`babel-preset-env`](https://github.com/babel/babel-preset-env):
+如果你正在使用的不是 `node v7.6+`, 我们推荐你用 [`babel-preset-env`](https://github.com/babel/babel-preset-env) 配置 `babel` :
 
 ```bash
 $ npm install babel-register babel-preset-env --save
 ```
 
-Setup `babel-register` in your entry file:
+在你入口文件配置 `babel-register`:
 
 ```js
 require('babel-register');
 ```
 
-And have your `.babelrc` setup:
+还有你的 `.babelrc` 配置:
 
 ```json
 {
@@ -187,115 +172,16 @@ And have your `.babelrc` setup:
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-Check the [Troubleshooting Guide](docs/troubleshooting.md) or [Debugging Koa](docs/guide.md#debugging-koa) in
-the general Koa guide.
+在 Koa 指南中查阅 [故障排除指南](troubleshooting.md) 或 [调试 Koa](guide.md#debugging-koa).
 
-## Running tests
+## 运行测试
 
 ```
 $ npm test
 ```
 
-## Authors
-
-See [AUTHORS](AUTHORS).
-
-## Community
-
- - [Badgeboard](https://koajs.github.io/badgeboard) and list of official modules
- - [Examples](https://github.com/koajs/examples)
- - [Middleware](https://github.com/koajs/koa/wiki) list
- - [Wiki](https://github.com/koajs/koa/wiki)
- - [G+ Community](https://plus.google.com/communities/101845768320796750641)
- - [Reddit Community](https://www.reddit.com/r/koajs)
- - [Mailing list](https://groups.google.com/forum/#!forum/koajs)
- - [中文文档](https://github.com/guo-yu/koa-guide)
- - __[#koajs]__ on freenode
-
-## Job Board
-
-Looking for a career upgrade?
-
-<a href="https://astro.netlify.com/automattic"><img src="https://astro.netlify.com/static/automattic.png"></a>
-<a href="https://astro.netlify.com/segment"><img src="https://astro.netlify.com/static/segment.png"></a>
-<a href="https://astro.netlify.com/auth0"><img src="https://astro.netlify.com/static/auth0.png"/></a>
-
-## Backers
-
-Support us with a monthly donation and help us continue our activities.
-
-<a href="https://opencollective.com/koajs/backer/0/website" target="_blank"><img src="https://opencollective.com/koajs/backer/0/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/1/website" target="_blank"><img src="https://opencollective.com/koajs/backer/1/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/2/website" target="_blank"><img src="https://opencollective.com/koajs/backer/2/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/3/website" target="_blank"><img src="https://opencollective.com/koajs/backer/3/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/4/website" target="_blank"><img src="https://opencollective.com/koajs/backer/4/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/5/website" target="_blank"><img src="https://opencollective.com/koajs/backer/5/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/6/website" target="_blank"><img src="https://opencollective.com/koajs/backer/6/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/7/website" target="_blank"><img src="https://opencollective.com/koajs/backer/7/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/8/website" target="_blank"><img src="https://opencollective.com/koajs/backer/8/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/9/website" target="_blank"><img src="https://opencollective.com/koajs/backer/9/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/10/website" target="_blank"><img src="https://opencollective.com/koajs/backer/10/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/11/website" target="_blank"><img src="https://opencollective.com/koajs/backer/11/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/12/website" target="_blank"><img src="https://opencollective.com/koajs/backer/12/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/13/website" target="_blank"><img src="https://opencollective.com/koajs/backer/13/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/14/website" target="_blank"><img src="https://opencollective.com/koajs/backer/14/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/15/website" target="_blank"><img src="https://opencollective.com/koajs/backer/15/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/16/website" target="_blank"><img src="https://opencollective.com/koajs/backer/16/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/17/website" target="_blank"><img src="https://opencollective.com/koajs/backer/17/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/18/website" target="_blank"><img src="https://opencollective.com/koajs/backer/18/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/19/website" target="_blank"><img src="https://opencollective.com/koajs/backer/19/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/20/website" target="_blank"><img src="https://opencollective.com/koajs/backer/20/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/21/website" target="_blank"><img src="https://opencollective.com/koajs/backer/21/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/22/website" target="_blank"><img src="https://opencollective.com/koajs/backer/22/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/23/website" target="_blank"><img src="https://opencollective.com/koajs/backer/23/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/24/website" target="_blank"><img src="https://opencollective.com/koajs/backer/24/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/25/website" target="_blank"><img src="https://opencollective.com/koajs/backer/25/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/26/website" target="_blank"><img src="https://opencollective.com/koajs/backer/26/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/27/website" target="_blank"><img src="https://opencollective.com/koajs/backer/27/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/28/website" target="_blank"><img src="https://opencollective.com/koajs/backer/28/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/backer/29/website" target="_blank"><img src="https://opencollective.com/koajs/backer/29/avatar.svg"></a>
-
-
-## Sponsors
-
-Become a sponsor and get your logo on our README on Github with a link to your site.
-
-<a href="https://opencollective.com/koajs/sponsor/0/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/1/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/2/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/3/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/4/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/5/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/6/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/7/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/8/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/9/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/9/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/10/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/10/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/11/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/11/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/12/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/12/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/13/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/13/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/14/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/14/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/15/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/15/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/16/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/16/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/17/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/17/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/18/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/18/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/19/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/19/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/20/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/20/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/21/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/21/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/22/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/22/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/23/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/23/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/24/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/24/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/25/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/25/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/26/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/26/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/27/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/27/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/28/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/28/avatar.svg"></a>
-<a href="https://opencollective.com/koajs/sponsor/29/website" target="_blank"><img src="https://opencollective.com/koajs/sponsor/29/avatar.svg"></a>
-
-# License
-
-  MIT
 
 [npm-image]: https://img.shields.io/npm/v/koa.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/koa
