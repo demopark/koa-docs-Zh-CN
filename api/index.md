@@ -1,8 +1,8 @@
-# Installation
+# 安装
 
-  Koa requires __node v7.6.0__ or higher for ES2015 and async function support.
+Koa 依赖 __node v7.6.0__ 或 ES2015及更高版本和 async 方法支持.
 
-  You can quickly install a supported version of node with your favorite version manager:
+你可以使用自己喜欢的版本管理器快速安装支持的 node 版本：
 
 ```bash
 $ nvm install 7
@@ -10,20 +10,20 @@ $ npm i koa
 $ node my-koa-app.js
 ```
 
-## Async Functions with Babel
+## 使用 Babel 实现 Async 方法
 
-To use `async` functions in Koa in versions of node < 7.6, we recommend using [babel's require hook](http://babeljs.io/docs/usage/babel-register/).
+要在 node < 7.6 版本的 Koa 中使用 `async` 方法, 我们推荐使用 [babel's require hook](http://babeljs.io/docs/usage/babel-register/).
 
 ```js
 require('babel-register');
-// require the rest of the app that needs to be transpiled after the hook
+// 应用的其余 require 需要被放到 hook 后面
 const app = require('./app');
 ```
 
-To parse and transpile async functions,
-you should at a minimum have the [transform-async-to-generator](http://babeljs.io/docs/plugins/transform-async-to-generator/)
-or [transform-async-to-module-method](http://babeljs.io/docs/plugins/transform-async-to-module-method/) plugins.
-For example, in your `.babelrc` file, you should have:
+要解析和编译 async 方法, 你至少应该有 [transform-async-to-generator](http://babeljs.io/docs/plugins/transform-async-to-generator/)
+或 [transform-async-to-module-method](http://babeljs.io/docs/plugins/transform-async-to-module-method/) 插件.
+
+例如, 在你的 `.babelrc` 文件中, 你应该有:
 
 ```json
 {
@@ -31,22 +31,16 @@ For example, in your `.babelrc` file, you should have:
 }
 ```
 
-You can also use the [env preset](http://babeljs.io/docs/plugins/preset-env/) with a target option `"node": "current"` instead.
+你也可以用 [env preset](http://babeljs.io/docs/plugins/preset-env/) 的 target 参数 `"node": "current"` 替代.
 
-# Application
+# 应用程序
 
-  A Koa application is an object containing an array of middleware functions
-  which are composed and executed in a stack-like manner upon request. Koa is similar to many
-  other middleware systems that you may have encountered such as Ruby's Rack, Connect, and so on -
-  however a key design decision was made to provide high level "sugar" at the otherwise low-level
-  middleware layer. This improves interoperability, robustness, and makes writing middleware much
-  more enjoyable.
+Koa 应用程序是一个包含一组中间件函数的对象，它是按照类似堆栈的方式组织和执行的。
+Koa 类似于你可能遇到过的许多其他中间件系统，例如 Ruby 的 Rack ，Connect 等，然而，一个关键的设计点是在其低级中间件层中提供高级“语法糖”。 这提高了互操作性，稳健性，并使书写中间件更加愉快。
 
-  This includes methods for common tasks like content-negotiation, cache freshness, proxy support, and redirection
-  among others. Despite supplying a reasonably large number of helpful methods Koa maintains a small footprint, as
-  no middleware are bundled.
+这包括诸如内容协商，缓存清理，代理支持和重定向等常见任务的方法。 尽管提供了相当多的有用的方法 Koa 仍保持了一个很小的体积，因为没有捆绑中间件。
 
-  The obligatory hello world application:
+必修的 hello world 应用:
 
 ```js
 const Koa = require('koa');
@@ -59,20 +53,11 @@ app.use(async ctx => {
 app.listen(3000);
 ```
 
-## Cascading
+## 级联
 
-  Koa middleware cascade in a more traditional way as you may be used to with similar tools -
-  this was previously difficult to make user friendly with node's use of callbacks.
-  However with async functions we can achieve "true" middleware. Contrasting Connect's implementation which
-  simply passes control through series of functions until one returns, Koa invoke "downstream", then
-  control flows back "upstream".
+Koa 中间件以更传统的方式级联，您可能习惯使用类似的工具 - 之前难以让用户友好地使用 node 的回调。然而，使用 async 功能，我们可以实现 “真实” 的中间件。对比 Connect 的实现，通过一系列功能直接传递控制，直到一个返回，Koa 调用“下游”，然后控制流回“上游”。
 
-  The following example responds with "Hello World", however first the request flows through
-  the `x-response-time` and `logging` middleware to mark when the request started, then continue
-  to yield control through the response middleware. When a middleware invokes `next()`
-  the function suspends and passes control to the next middleware defined. After there are no more
-  middleware to execute downstream, the stack will unwind and each middleware is resumed to perform
-  its upstream behaviour.
+下面以 “Hello World” 的响应作为示例，首先请求流通过 `x-response-time` 和 `logging` 中间件来请求何时开始，然后继续移交控制给 `response` 中间件。当一个中间件调用 `next()`  则该函数暂停并将控制传递给定义的下一个中间件。当在下游没有更多的中间件执行后，堆栈将展开并且每个中间件恢复执行其上游行为。
 
 ```js
 const Koa = require('koa');
@@ -105,14 +90,13 @@ app.use(async ctx => {
 app.listen(3000);
 ```
 
-## Settings
+## 设置
 
-  Application settings are properties on the `app` instance, currently
-  the following are supported:
+应用程序设置是 `app` 实例上的属性，目前支持如下：
 
-  - `app.env` defaulting to the __NODE_ENV__ or "development"
-  - `app.proxy` when true proxy header fields will be trusted
-  - `app.subdomainOffset` offset of `.subdomains` to ignore [2]
+  - `app.env` 默认是 __NODE_ENV__ 或 "development"
+  - `app.proxy` 当真正的代理头字段将被信任时
+  - `app.subdomainOffset` 对于要忽略的 `.subdomains` 偏移[2]
 
 ## app.listen(...)
 

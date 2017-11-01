@@ -17,7 +17,7 @@ Koa没有捆绑任何中间件。
 
 ## 安装
 
-Koa 依赖 __node v7.6.0__ 或 ES2015及更高版本和同步方法支持.
+Koa 依赖 __node v7.6.0__ 或 ES2015及更高版本和 async 方法支持.
 
 ```
 $ npm install koa
