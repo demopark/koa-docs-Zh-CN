@@ -6,6 +6,8 @@
   [![Test coverage][coveralls-image]][coveralls-url]
   [![OpenCollective Backers][backers-image]](#backers)
   [![OpenCollective Sponsors][sponsors-image]](#sponsors)
+  
+> 此项目同步自 [koajs](https://github.com/koajs) / [koa](https://github.com/koajs/koa) 项目中的  docs. 除特殊情况, 将保持每月一次的同步频率.
 
 用 node.js 来实现 HTTP 的中间件框架，让 Web 应用程序和 API 可以更加愉快地编写。Koa 的中间件堆栈以类似堆栈的方式流动，允许您执行下游操作，然后过滤并操纵上游的响应。
 
