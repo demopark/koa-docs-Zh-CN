@@ -1,6 +1,6 @@
-# Response
+# 响应(Response)
 
-Koa `Response` 对象是在 node 的 vanilla 响应对象之上的抽象，提供了对 HTTP 服务器开发有用的诸多功能。
+Koa `Response` 对象是在 node 的 vanilla 响应对象之上的抽象，提供了诸多对 HTTP 服务器开发有用的功能。
 
 ## API
 
@@ -115,23 +115,23 @@ __注意__: 不用太在意记住这些字符串, 如果你写错了,可以查�
   - `Object` || `Array` JSON-字符串化
   - `null` 无内容响应
 
-如果 `response.status` 未被设置, Koa 将会自动设置状态为 `200` 或 `204`.
+如果 `response.status` 未被设置, Koa 将会自动设置状态为 `200` 或 `204`。
 
 #### String
 
-Content-Type 默认为 text/html 或 text/plain, 同时默认字符集是 utf-8. Content-Length 字段也是如此.
+Content-Type 默认为 `text/html` 或 `text/plain`, 同时默认字符集是 utf-8。Content-Length 字段也是如此。
 
 #### Buffer
 
-Content-Type 默认为 application/octet-stream, 并且 Content-Length 字段也是如此.
+Content-Type 默认为 `application/octet-stream`, 并且 Content-Length 字段也是如此。
 
 #### Stream
 
-Content-Type 默认为 application/octet-stream.
+Content-Type 默认为 `application/octet-stream`。
 
  每当流被设置为响应主体时，`.onerror` 作为侦听器自动添加到 `error` 事件中以捕获任何错误。此外，每当请求关闭（甚至过早）时，流都将被销毁。如果你不想要这两个功能，请勿直接将流设为主体。例如，当将主体设置为代理中的 HTTP 流时，你可能不想要这样做，因为它会破坏底层连接。
 
-  参阅: https://github.com/koajs/koa/pull/612 获取更多信息.
+  参阅: https://github.com/koajs/koa/pull/612 获取更多信息。
 
 以下是流错误处理的示例，而不会自动破坏流：
 
@@ -145,11 +145,11 @@ app.use(async ctx => {
 
 #### Object
 
-Content-Type 默认为 application/json. 这包括普通的对象 `{ foo: 'bar' }` 和数组 `['foo', 'bar']`.
+Content-Type 默认为 `application/json`. 这包括普通的对象 `{ foo: 'bar' }` 和数组 `['foo', 'bar']`。
 
 ### response.get(field)
 
-不区分大小写获取响应标头字段值 `field`.
+不区分大小写获取响应标头字段值 `field`。
 
 ```js
 const etag = ctx.response.get('ETag');
@@ -165,7 +165,7 @@ ctx.set('Cache-Control', 'no-cache');
 
 ### response.append(field, value)
 
-用值 `val` 附加额外的标头 `field`.
+用值 `val` 附加额外的标头 `field`。
 
 ```js
 ctx.append('Link', '<http://127.0.0.1/>');
@@ -184,11 +184,11 @@ ctx.set({
 
 ### response.remove(field)
 
-删除标头 `field`.
+删除标头 `field`。
 
 ### response.type
 
-获取响应 `Content-Type` 不含参数 "charset".
+获取响应 `Content-Type` 不含参数 "charset"。
 
 ```js
 const ct = ctx.type;
@@ -261,7 +261,7 @@ ctx.body = 'Redirecting to shopping cart';
 
 ### response.lastModified
 
-将 `Last-Modified` 标头返回为 `Date`, 如果存在.
+将 `Last-Modified` 标头返回为 `Date`, 如果存在。
 
 ### response.lastModified=
 
@@ -273,7 +273,7 @@ ctx.response.lastModified = new Date();
 
 ### response.etag=
 
-设置包含 `"` 包裹的 ETag 响应
+设置包含 `"` 包裹的 ETag 响应，
 请注意，没有相应的 `response.etag` getter。
 
 ```js
@@ -282,7 +282,7 @@ ctx.response.etag = crypto.createHash('md5').update(ctx.body).digest('hex');
 
 ### response.vary(field)
 
-在 `field` 上变化
+在 `field` 上变化。
 
 ### response.flushHeaders()
 
