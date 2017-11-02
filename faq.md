@@ -1,49 +1,34 @@
-# Frequently Asked Questions
+# 常见问题
 
-## Does Koa replace Express?
+## Koa 替代 Express?
 
-  It's more like Connect, but a lot of the Express goodies
-  were moved to the middleware level in Koa to help form
-  a stronger foundation. This makes middleware more enjoyable
-  and less error-prone to write, for the entire stack, not
-  just the end application code.
+它更像是 Connect，但是很多 Express 的好东西被转移到 Koa 的中间件级别，以帮助形成更强大的基础。 这使得中间件对于整个堆栈而言不仅仅是最终应用程序代码，而且更易于书写，并更不容易出错。
 
-  Typically many middleware would
-  re-implement similar features, or even worse incorrectly implement them,
-  when features like signed cookie secrets among others are typically application-specific,
-  not middleware specific.
+通常，许多中间件将重新实现类似的功能，甚至更糟的是不正确地实现它们， 如签名的cookie 加密等通常是应用程序特定的，而不是中间件特定的。
 
-## Does Koa replace Connect?
+## Koa 替代 Connect?
 
-  No, just a different take on similar functionality
-  now that async functions allow us to write code with fewer
-  callbacks. Connect is equally capable, and some may still prefer it,
-  it's up to what you prefer.
+不，只是不同的功能，现在通过构建器也可以让我们用较少的回调编写代码。 Connect 同样可以，有些人可能仍然喜欢它，这取决于你喜欢什么。
 
-## Does Koa include routing?
+## Koa 包含路由吗?
 
-  No - out of the box Koa has no form of routing, however
-  many routing middleware are available: https://github.com/koajs/koa/wiki
+不 - Koa 没有开箱即用的路由, 但是有很多路由中间件可用: https://github.com/koajs/koa/wiki
 
-## Why isn't Koa just Express 4.0?
+## 为什么 Koa 不是 Express 4.0?
 
-  Koa is a pretty large departure from what people know about Express,
-  the design is fundamentally much different, so the migration from
-  Express 3.0 to this Express 4.0 would effectively mean rewriting
-  the entire application, so we thought it would be more appropriate
-  to create a new library.
+Koa 与现在所知的 Express 差距很大，设计根本上有很大差异，所以从 Express 3.0 迁移到Express 4.0 将有意味着重写整个应用程序，所以我们考虑创建一个新的库。
 
-## What custom properties do the Koa objects have?
+## Koa 对象有什么自定义属性？
 
-  Koa uses its own custom objects: `ctx`, `ctx.request`, and `ctx.response`.
-  These objects abstract node's `req` and `res` objects with convenience methods and getters/setters.
-  Generally, properties added to these objects must obey the following rules:
+Koa 使用它的自定义对象: `ctx`, `ctx.request`, 和 `ctx.response`.
+这些对象使用便捷的方法和 getter/setter 来抽象 node 的 `req` 和 `res` 对象。
 
-  - They must be either very commonly used and/or must do something useful
-  - If a property exists as a setter, then it will also exist as a getter, but not vice versa
+通常，添加到这些对象的属性必须遵循以下规则：
 
-Many of `ctx.request` and `ctx.response`'s properties are delegated to `ctx`.
-If it's a getter/setter, then both the getter and the setter will strictly
-correspond to either `ctx.request` or `ctx.response`.
+  - 它们必须是非常常用的 和/或 必须做一些有用的事情
+  - 如果一个属性作为一个 setter 存在，那么它也将作为一个 getter 存在，但反之亦然
 
-Please think about these rules before suggesting additional properties.
+许多 `ctx.request` 和 `ctx.response` 的属性都被委托给 `ctx`。
+如果它是一个 getter/setter，那么 getter 和 setter 都将严格对应于 `ctx.request` 或 `ctx.response`。
+
+附加其他属性之前，请考虑这些规则。
