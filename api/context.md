@@ -1,41 +1,34 @@
-# Context
+# 上下文(Context)
 
-  A Koa Context encapsulates node's `request` and `response` objects
-  into a single object which provides many helpful methods for writing
-  web applications and APIs.
-  These operations are used so frequently in HTTP server development
-  that they are added at this level instead of a higher level framework,
-  which would force middleware to re-implement this common functionality.
+Koa Context 将 node 的 `request` 和 `response` 对象封装到单个对象中，为编写 Web 应用程序和 API 提供了许多有用的方法。
+这些操作在 HTTP 服务器开发中频繁使用，它们被添加到此级别而不是更高级别的框架，这将强制中间件重新实现此通用功能。
 
-  A `Context` is created _per_ request, and is referenced in middleware
-  as the receiver, or the `ctx` identifier, as shown in the following
-  snippet:
+_每个_ 请求都将创建一个 `Context`，并在中间件中作为接收器引用，或者 `ctx` 标识符，如以下代码片段所示：
 
 ```js
 app.use(async ctx => {
-  ctx; // is the Context
-  ctx.request; // is a koa Request
-  ctx.response; // is a koa Response
+  ctx; // 这是 Context
+  ctx.request; // 这是 koa Request
+  ctx.response; // 这是 koa Response
 });
 ```
 
-  Many of the context's accessors and methods simply delegate to their `ctx.request` or `ctx.response`
-  equivalents for convenience, and are otherwise identical. For example `ctx.type` and `ctx.length`
-  delegate to the `response` object, and `ctx.path` and `ctx.method` delegate to the `request`.
+为方便起见许多上下文的访问器和方法直接委托给它们的 `ctx.request `或 `ctx.response` ，不然的话它们是相同的。
+例如 `ctx.type` 和 `ctx.length` 委托给 `response` 对象，`ctx.path` 和 `ctx.method` 委托给 `request`。
 
 ## API
 
-  `Context` specific methods and accessors.
+  `Context` 具体方法和访问器.
 
 ### ctx.req
 
-  Node's `request` object.
+  Node 的 `request` 对象.
 
 ### ctx.res
 
-  Node's `response` object.
+  Node 的 `response` 对象.
 
-  Bypassing Koa's response handling is __not supported__. Avoid using the following node properties:
+  绕过 Koa 的 response 处理是 __不被支持的__. 应避免使用以下 node 属性：
 
 - `res.statusCode`
 - `res.writeHead()`
@@ -44,15 +37,15 @@ app.use(async ctx => {
 
 ### ctx.request
 
-  A koa `Request` object.
+  koa 的 `Request` 对象.
 
 ### ctx.response
 
-  A koa `Response` object.
+  koa 的 `Response` 对象.
 
 ### ctx.state
 
-  The recommended namespace for passing information through middleware and to your frontend views.
+推荐的命名空间，用于通过中间件传递信息和你的前端视图。
 
 ```js
 ctx.state.user = await User.find(id);
@@ -60,36 +53,36 @@ ctx.state.user = await User.find(id);
 
 ### ctx.app
 
-  Application instance reference.
+  应用程序实例引用
 
 ### ctx.cookies.get(name, [options])
 
-  Get cookie `name` with `options`:
+   通过 `options` 获取 cookie `name`:
 
- - `signed` the cookie requested should be signed
+ - `signed` 所请求的cookie应该被签名
 
-koa uses the [cookies](https://github.com/jed/cookies) module where options are simply passed.
+koa 使用 [cookies](https://github.com/jed/cookies) 模块，其中只需传递参数。
 
 ### ctx.cookies.set(name, value, [options])
 
-  Set cookie `name` to `value` with `options`:
+  通过 `options` 设置 cookie `name` 的 `value` :
 
- - `maxAge` a number representing the milliseconds from Date.now() for expiry
- - `signed` sign the cookie value
- - `expires` a `Date` for cookie expiration
- - `path` cookie path, `/'` by default
- - `domain` cookie domain
- - `secure` secure cookie
- - `httpOnly` server-accessible cookie, __true__ by default
- - `overwrite` a boolean indicating whether to overwrite previously set cookies of the same name (__false__ by default). If this is true, all cookies set during the same request with the same name (regardless of path or domain) are filtered out of the Set-Cookie header when setting this cookie.
+ - `maxAge` 一个数字表示从 Date.now() 得到的毫秒数
+ - `signed` cookie 签名值
+ - `expires` cookie 过期的 `Date`
+ - `path` cookie 路径, 默认是`'/'`
+ - `domain` cookie 域名
+ - `secure` 安全 cookie
+ - `httpOnly` 服务器可访问 cookie,  默认是 __true__
+ - `overwrite` 一个布尔值，表示是否覆盖以前设置的同名的 cookie (默认是 __false__). 如果是 true, 在同一个请求中设置相同名称的所有 Cookie（不管路径或域）是否在设置此Cookie 时从 Set-Cookie 标头中过滤掉。
 
-koa uses the [cookies](https://github.com/jed/cookies) module where options are simply passed.
+koa 使用传递简单参数的 [cookies](https://github.com/jed/cookies) 模块。
 
 ### ctx.throw([status], [msg], [properties])
 
-  Helper method to throw an error with a `.status` property
-  defaulting to `500` that will allow Koa to respond appropriately.
-  The following combinations are allowed:
+Helper 方法抛出一个 `.status` 属性默认为 `500` 的错误，这将允许 Koa 做出适当地响应。
+
+允许以下组合：
 
 ```js
 ctx.throw(400);
@@ -97,7 +90,7 @@ ctx.throw(400, 'name required');
 ctx.throw(400, 'name required', { user: user });
 ```
 
-  For example `ctx.throw(400, 'name required')` is equivalent to:
+  例如 `ctx.throw(400, 'name required')` 等效于:
 
 ```js
 const err = new Error('name required');
@@ -106,41 +99,35 @@ err.expose = true;
 throw err;
 ```
 
-  Note that these are user-level errors and are flagged with
-  `err.expose` meaning the messages are appropriate for
-  client responses, which is typically not the case for
-  error messages since you do not want to leak failure
-  details.
-
-  You may optionally pass a `properties` object which is merged into the error as-is, useful for decorating machine-friendly errors which are reported to the requester upstream.
+请注意，这些是用户级错误，并用 `err.expose` 标记，这意味着消息适用于客户端响应，这通常不是错误消息的内容，因为您不想泄漏故障详细信息。
+ 
+你可以根据需要将 `properties` 对象传递到错误中，对于装载上传给请求者的机器友好的错误是有用的。这用于修饰其人机友好型错误并向上游的请求者报告非常有用。
 
 ```js
 ctx.throw(401, 'access_denied', { user: user });
 ```
 
-koa uses [http-errors](https://github.com/jshttp/http-errors) to create errors.
+koa 使用 [http-errors](https://github.com/jshttp/http-errors) 来创建错误。
 
 ### ctx.assert(value, [status], [msg], [properties])
 
-  Helper method to throw an error similar to `.throw()`
-  when `!value`. Similar to node's [assert()](http://nodejs.org/api/assert.html)
-  method.
+当 `!value` 时，Helper 方法抛出类似于 `.throw()` 的错误。这与 node 的 [assert()](http://nodejs.org/api/assert.html) 方法类似.
 
 ```js
 ctx.assert(ctx.state.user, 401, 'User not found. Please login!');
 ```
 
-koa uses [http-assert](https://github.com/jshttp/http-assert) for assertions.
+koa 使用 [http-assert](https://github.com/jshttp/http-assert) 作为断言。
 
 ### ctx.respond
 
-  To bypass Koa's built-in response handling, you may explicitly set `ctx.respond = false;`. Use this if you want to write to the raw `res` object instead of letting Koa handle the response for you.
+为了绕过 Koa 的内置 response 处理，你可以显式设置 `ctx.respond = false;`。 如果您想要写入原始的 `res` 对象而不是让 Koa 处理你的 response，请使用此参数。
 
-  Note that using this is __not__ supported by Koa. This may break intended functionality of Koa middleware and Koa itself. Using this property is considered a hack and is only a convenience to those wishing to use traditional `fn(req, res)` functions and middleware within Koa.
+请注意，Koa _不_ 支持使用此功能。这可能会破坏 Koa 中间件和 Koa 本身的预期功能。使用这个属性被认为是一个 hack，只是便于那些希望在 Koa 中使用传统的 `fn(req, res)` 功能和中间件的人。
 
-## Request aliases
+## Request 别名
 
-  The following accessors and alias [Request](request.md) equivalents:
+以下访问器和 [Request](request.md) 别名等效：
 
   - `ctx.header`
   - `ctx.headers`
@@ -174,9 +161,9 @@ koa uses [http-assert](https://github.com/jshttp/http-assert) for assertions.
   - `ctx.acceptsLanguages()`
   - `ctx.get()`
 
-## Response aliases
+## Response 别名
 
-  The following accessors and alias [Response](response.md) equivalents:
+以下访问器和 [Response](response.md) 别名等效：
 
   - `ctx.body`
   - `ctx.body=`
