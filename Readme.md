@@ -143,7 +143,7 @@ app.use(async (ctx, next) => {
  - [使用指南](guide.md)
  - [错误处理](error-handling.md)
  - [Koa 与 Express](koa-vs-express.md)
- - [FAQ](faq.md)
+ - [常见问题](faq.md)
  - [API 文档](api/index.md)
 
 ## Babel 配置
