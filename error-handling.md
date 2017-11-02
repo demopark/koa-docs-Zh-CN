@@ -1,9 +1,9 @@
-# Error Handling
+# 错误处理
 
 ## Try-Catch
 
-  Using async functions means that you can try-catch `next`.
-  This example adds a `.status` to all errors:
+使用 async 方法意味着你可以 try-catch `next`.
+此示例为所有错误添加了一个 `.status`：
 
   ```js
   app.use(async (ctx, next) => {
@@ -16,23 +16,11 @@
   });
   ```
 
-### Default Error Handler
+### 默认错误处理程序
 
-  The default error handler is essentially a try-catch at
-  the very beginning of the middleware chain. To use a
-  different error handler, simply put another try-catch at
-  the beginning of the middleware chain, and handle the error
-  there. However, the default error handler is good enough for
-  most use cases. It will use a status code of `err.status`,
-  or by default 500. If `err.expose` is true, then `err.message`
-  will be the reply. Otherwise, a message generated from the
-  error code will be used (e.g. for the code 500 the message
-  "Internal Server Error" will be used). All headers will be
-  cleared from the request, but any headers in `err.headers`
-  will then be set. You can use a try-catch, as specified
-  above, to add a header to this list.
+默认的错误处理程序本质上是中间件链开始时的一个 try-catch。要使用不同的错误处理程序，只需在中间件链的起始处放置另一个 try-catch，并在那里处理错误。但是，默认错误处理程序对于大多数用例来说都是足够好的。它将使用状态代码 `err.status`，或默认为500。如果 `err.expose` 是 true，那么 `err.message` 就是答复。否则，将使用从错误代码生成的消息（例如，对于代码500，将使用消息“内部服务器错误”）。所有标头将从请求中清除，但是任何在 `err.headers` 中的标头将会被设置。你可以使用如上所述的 try-catch 来向此列表添加标头。
 
-  Here is an example of creating your own error handler:
+以下是创建你自己的错误处理程序的示例：
 
 ```js
 app.use(async (ctx, next) => {
@@ -48,13 +36,6 @@ app.use(async (ctx, next) => {
 })
 ```
 
-## The Error Event
+## 错误事件
 
-  Error event listeners can be specified with `app.on('error')`.
-  If no error listener is specified, a default error listener
-  is used. Error listener receive all errors that make their
-  way back through the middleware chain, if an error is caught
-  and not thrown again, it will not be passed to the error
-  listener. If no error event listener is specified, then
-  `app.onerror` will be used, which simply log the error if
-  `error.expose` is true and `app.silent` is false.
+错误事件侦听器可以用 `app.on('error')` 指定。如果未指定错误侦听器，则使用默认错误侦听器。错误侦听器接收所有中间件链返回的错误，如果一个错误被捕获并且不再抛出，它将不会被传递给错误侦听器。如果没有指定错误事件侦听器，那么将使用 `app.onerror`，如果 `error.expose` 为 true 并且 `app.silent` 为 false，则简单记录错误。
