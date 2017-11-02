@@ -1,13 +1,6 @@
-# Troubleshooting Koa
+# Koa 故障排除
 
-- [Whenever I try to access my route, it sends back a 404](#whenever-i-try-to-access-my-route-it-sends-back-a-404)
-- [My response or context changes have no effect](#my-response-or-context-changes-have-no-effect)
-- [My middleware is not called](#my-middleware-is-not-called)
-
-See also [debugging Koa](guide.md#debugging-koa).
-
-If you encounter a problem and later learn how to fix it, and think others might also encounter that problem, please 
-consider contributing to this documentation.
+如果您遇到问题，后来学习如何解决问题，并认为其他人也可能遇到这个问题，请考虑对本文档做出贡献。
 
 ## Whenever I try to access my route, it sends back a 404
 

@@ -144,6 +144,8 @@ app.use(async (ctx, next) => {
  - [错误处理](error-handling.md)
  - [Koa 与 Express](koa-vs-express.md)
  - [常见问题](faq.md)
+ - [从 Koa v1.x 迁移到 v2.x](migration.md)
+ - [Koa 故障排除](troubleshooting.md)
  - [API 文档](api/index.md)
 
 ## Babel 配置
