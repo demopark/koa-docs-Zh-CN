@@ -1,17 +1,14 @@
-THIS DOCUMENT IS IN PROGRESS. THIS PARAGRAPH SHALL BE REMOVED WHEN THIS DOCUMENT IS DONE.
+# Koa 与 Express
 
-# Koa vs Express
+在理念上，Koa 旨在 “修复和替换节点”，而 Express 旨在 “增加节点”。
+Koa 使用承诺和异步功能来摆脱回调地狱的应用程序，并简化错误处理。
+它暴露了自己的 `ctx.request` 和 `ctx.response` 对象，而不是 node 的 `req` 和 `res` 对象。
 
-  Philosophically, Koa aims to "fix and replace node", whereas Express "augments node".
-  Koa uses promises and async functions to rid apps of callback hell and simplify error handling.
-  It exposes its own `ctx.request` and `ctx.response` objects instead of node's `req` and `res` objects.
+另一方面，Express 通过附加的属性和方法增加了 node 的 `req` 和 `res` 对象，并且包含许多其他 “框架” 功能，如路由和模板，而 Koa 则没有。
 
-  Express, on the other hand, augments node's `req` and `res` objects with additional properties and methods
-  and includes many other "framework" features, such as routing and templating, which Koa does not.
+因此，Koa 可被视为 node.js 的 `http` 模块的抽象，其中 Express 是 node.js 的应用程序框架。
 
-  Thus, Koa can be viewed as an abstraction of node.js's `http` modules, where as Express is an application framework for node.js.
-
-| Feature           | Koa | Express | Connect |
+| 功能           | Koa | Express | Connect |
 |------------------:|-----|---------|---------|
 | Middleware Kernel | ✓   | ✓       | ✓       |
 | Routing           |     | ✓       |         |
@@ -19,77 +16,57 @@ THIS DOCUMENT IS IN PROGRESS. THIS PARAGRAPH SHALL BE REMOVED WHEN THIS DOCUMENT
 | Sending Files     |     | ✓       |         |
 | JSONP             |     | ✓       |         |
 
+因此，如果您想要更接近 node.js 和传统的 node.js 样式编码，那么您可能希望坚持使用Connect/Express 或类似的框架。
+如果你想摆脱回调，请使用 Koa。
 
-  Thus, if you'd like to be closer to node.js and traditional node.js-style coding, you probably want to stick to Connect/Express or similar frameworks.
-  If you want to get rid of callbacks, use Koa.
+由于这种不同的理念，其结果是传统的 node.js “中间件”（即“（req，res，next）”的函数）与Koa不兼容。 你的应用基本上要重新改写了。
 
-  As result of this different philosophy is that traditional node.js "middleware", i.e. functions of the form `(req, res, next)`, are incompatible with Koa. Your application will essentially have to be rewritten from the ground, up.
+## Koa 替代 Express?
 
-## Does Koa replace Express?
+它更像是 Connect，但是很多 Express 的好东西被转移到 Koa 的中间件级别，以帮助形成更强大的基础。 这使得中间件对于整个堆栈而言不仅仅是最终应用程序代码，而且更易于书写，并更不容易出错。
 
-  It's more like Connect, but a lot of the Express goodies
-  were moved to the middleware level in Koa to help form
-  a stronger foundation. This makes middleware more enjoyable
-  and less error-prone to write, for the entire stack, not
-  just the end application code.
+通常，许多中间件将重新实现类似的功能，甚至更糟的是不正确地实现它们， 如签名的cookie 加密等通常是应用程序特定的，而不是中间件特定的。
 
-  Typically many middleware would
-  re-implement similar features, or even worse incorrectly implement them,
-  when features like signed cookie secrets among others are typically application-specific,
-  not middleware specific.
+## Koa 替代 Connect?
 
-## Does Koa replace Connect?
+不，只是不同的功能，现在通过构建器也可以让我们用较少的回调编写代码。 Connect 同样可以，有些人可能仍然喜欢它，这取决于你喜欢什么。
 
-  No, just a different take on similar functionality
-  now that generators allow us to write code with less
-  callbacks. Connect is equally capable, and some may still prefer it,
-  it's up to what you prefer.
+## 为什么 Koa 不是 Express 4.0?
 
-## Why isn't Koa just Express 4.0?
+Koa 与现在所知的 Express 差距很大，设计根本上有很大差异，所以从 Express 3.0 迁移到Express 4.0 将有意味着重写整个应用程序，所以我们考虑创建一个新的库。
 
-  Koa is a pretty large departure from what people know about Express,
-  the design is fundamentally much different, so the migration from
-  Express 3.0 to this Express 4.0 would effectively mean rewriting
-  the entire application, so we thought it would be more appropriate
-  to create a new library.
+## Koa 与 Connect/Express 有哪些不同?
 
-## How is Koa different than Connect/Express?
+### 基于 Promises 的控制流程
 
-### Promises-based control flow
+没有回调地狱。
 
-  No callback hell.
+通过 try/catch 更好的处理错误。
 
-  Better error handling through try/catch.
+无需域。
 
-  No need for domains.
+### Koa 非常精简
 
-### Koa is barebones
+不同于 Connect 和 Express, Koa 不含任何中间件.
 
-  Unlike both Connect and Express, Koa does not include any middleware.
+不同于 Express, 不提供路由.
 
-  Unlike Express, routing is not provided.
+不同于 Express, 不提供许多便捷设施。 例如，发送文件.
 
-  Unlike Express, many convenience utilities are not provided. For example, sending files.
+Koa 更加模块化.
 
-  Koa is more modular.
+### Koa 对中间件的依赖较少
 
-### Koa relies less on middleware
+例如, 不使用 “body parsing” 中间件，而是使用 body 解析函数。
 
-  For example, instead of a "body parsing" middleware, you would instead use a body parsing function.
+### Koa 抽象 node 的 request/response
 
-### Koa abstracts node's request/response
+减少攻击。
 
-  Less hackery.
+更好的用户体验。
 
-  Better user experience.
-
-  Proper stream handling.
+恰当的流处理。
   
-### Koa routing (third party libraries support)
+### Koa 路由（第三方库支持）
 
-  Since Express comes with its own routing, but Koa does not have
-  any in-built routing, but there are third party libraries available
-  koa-router and koa-route for routing.
-  Similarly just like we have helmet for security in Express, For koa
-  we have koa-helmet available and the list goes on for koa third
-  party available libraries.
+由于 Express 带有自己的路由，而 Koa 没有任何内置路由，但是有 koa-router 和 koa-route 第三方库可用。同样的, 就像我们在 Express 中有 helmet 保证安全, 对于 koa 我们有 koa-helmet 和一些列的第三方库可用。
