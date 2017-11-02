@@ -189,11 +189,11 @@ Note:
 - Many properties on `ctx` are defined using getters, setters, and `Object.defineProperty()`. You can only edit these properties (not recommended) by using `Object.defineProperty()` on `app.context`. See https://github.com/koajs/koa/issues/652.
 - Mounted apps currently use its parent's `ctx` and settings. Thus, mounted apps are really just groups of middleware.
 
-## Error Handling
+## 错误处理
 
-  By default outputs all errors to stderr unless `app.silent` is `true`.
-  The default error handler also won't outputs errors when `err.status` is `404` or `err.expose` is `true`.
-  To perform custom error-handling logic such as centralized logging you can add an "error" event listener:
+默认情况下，将所有错误输出到 stderr，除非 `app.silent` 为 `true`。
+当 `err.status` 是 `404` 或 `err.expose` 是 `true` 时默认错误处理程序也不会输出错误。
+要执行自定义错误处理逻辑，如集中式日志记录，您可以添加一个 “error” 事件侦听器：
 
 ```js
 app.on('error', err => {
@@ -201,7 +201,7 @@ app.on('error', err => {
 });
 ```
 
-  If an error is in the req/res cycle and it is _not_ possible to respond to the client, the `Context` instance is also passed:
+如果 req/res 期间出现错误，并且 _无法_ 响应客户端，`Context`实例仍然被传递：
 
 ```js
 app.on('error', (err, ctx) => {
@@ -209,6 +209,9 @@ app.on('error', (err, ctx) => {
 });
 ```
 
-  When an error occurs _and_ it is still possible to respond to the client, aka no data has been written to the socket, Koa will respond
-  appropriately with a 500 "Internal Server Error". In either case
-  an app-level "error" is emitted for logging purposes.
+当发生错误 _并且_ 仍然可以响应客户端时，
+也没有数据已经写入插座，
+Koa将对500个“内部服务器错误”进行适当的响应。
+在任一情况下，为了记录目的，都会发出应用级“错误”。
+
+When an error occurs _and_ it is still possible to respond to the client, aka no data has been written to the socket, Koa will respond appropriately with a 500 "Internal Server Error". In either case an app-level "error" is emitted for logging purposes.
