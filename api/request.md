@@ -1,55 +1,52 @@
-# Request
+# 请求(Request)
 
-  A Koa `Request` object is an abstraction on top of node's vanilla request object,
-  providing additional functionality that is useful for every day HTTP server
-  development.
+Koa `Request ` 对象是在 node 的 vanilla 请求对象之上的抽象，提供了诸多对 HTTP 服务器开发有用的功能。
 
 ## API
 
 ### request.header
 
- Request header object.
+请求标头对象。
 
 ### request.header=
 
- Set request header object.
+设置请求标头对象。
 
 ### request.headers
 
- Request header object. Alias as `request.header`.
+请求标头对象。别名为 `request.header`.
 
 ### request.headers=
 
-  Set request header object. Alias as `request.header=`.
+设置请求标头对象。别名为 `request.header=`.
 
 ### request.method
 
-  Request method.
+请求方法。
 
 ### request.method=
 
-  Set request method, useful for implementing middleware
-  such as `methodOverride()`.
+设置请求方法，对于实现诸如 `methodOverride()` 的中间件是有用的。
 
 ### request.length
 
-  Return request Content-Length as a number when present, or `undefined`.
+返回以数字返回请求的 Content-Length，或 `undefined`。
 
 ### request.url
 
-  Get request URL.
+获取请求 URL.
 
 ### request.url=
 
-  Set request URL, useful for url rewrites.
+设置请求 URL, 对 url 重写有用。
 
 ### request.originalUrl
 
-  Get request original URL.
+获取请求原始URL。
 
 ### request.origin
 
-  Get origin of URL, include `protocol` and `host`.
+获取URL的来源，包括 `protocol` 和 `host`。
 
 ```js
 ctx.request.origin
@@ -58,7 +55,7 @@ ctx.request.origin
 
 ### request.href
 
-  Get full request URL, include `protocol`, `host` and `url`.
+获取完整的请求URL，包括 `protocol`，`host` 和 `url`。
 
 ```js
 ctx.request.href;
@@ -67,49 +64,47 @@ ctx.request.href;
 
 ### request.path
 
-  Get request pathname.
+获取请求路径名。
 
 ### request.path=
 
-  Set request pathname and retain query-string when present.
+设置请求路径名，并在存在时保留查询字符串。
 
 ### request.querystring
 
-  Get raw query string void of `?`.
+根据 `?` 获取原始查询字符串.
 
 ### request.querystring=
 
-  Set raw query string.
+设置原始查询字符串。
 
 ### request.search
 
-  Get raw query string with the `?`.
+使用 `?` 获取原始查询字符串。
 
 ### request.search=
 
-  Set raw query string.
+设置原始查询字符串。
 
 ### request.host
 
-  Get host (hostname:port) when present. Supports `X-Forwarded-Host`
-  when `app.proxy` is __true__, otherwise `Host` is used.
+获取当前主机（hostname:port）。当 `app.proxy` 是 __true__ 时支持 `X-Forwarded-Host`，否则使用 `Host`。
 
 ### request.hostname
 
-  Get hostname when present. Supports `X-Forwarded-Host`
-  when `app.proxy` is __true__, otherwise `Host` is used.
+存在时获取主机名。当 `app.proxy` 是 __true__ 时支持 `X-Forwarded-Host`，否则使用 `Host`。
   
-  If host is IPv6, Koa delegates parsing to
+如果主机是 IPv6, Koa 解析到
   [WHATWG URL API](https://nodejs.org/dist/latest-v8.x/docs/api/url.html#url_the_whatwg_url_api),
-  *Note* This may impact performance.
+  *注意*  这可能会影响性能。
 
 ### request.URL
 
-  Get WHATWG parsed URL object.
+获取 WHATWG 解析的 URL 对象。
 
 ### request.type
 
-  Get request `Content-Type` void of parameters such as "charset".
+获取请求 `Content-Type` 不含参数 "charset"。
 
 ```js
 const ct = ctx.request.type;
@@ -118,7 +113,7 @@ const ct = ctx.request.type;
 
 ### request.charset
 
-  Get request charset when present, or `undefined`:
+在存在时获取请求字符集，或者 `undefined`：
 
 ```js
 ctx.request.charset;
@@ -127,11 +122,9 @@ ctx.request.charset;
 
 ### request.query
 
-  Get parsed query-string, returning an empty object when no
-  query-string is present. Note that this getter does _not_
-  support nested parsing.
+获取解析的查询字符串, 当没有查询字符串时，返回一个空对象。请注意，此 getter _不_ 支持嵌套解析。
 
-  For example "color=blue&size=small":
+例如 "color=blue&size=small":
 
 ```js
 {
@@ -142,8 +135,7 @@ ctx.request.charset;
 
 ### request.query=
 
-  Set query-string to the given object. Note that this
-  setter does _not_ support nested objects.
+将查询字符串设置为给定对象。 请注意，此 setter _不_ 支持嵌套对象。
 
 ```js
 ctx.query = { next: '/login' };
@@ -151,77 +143,69 @@ ctx.query = { next: '/login' };
 
 ### request.fresh
 
-  Check if a request cache is "fresh", aka the contents have not changed. This
-  method is for cache negotiation between `If-None-Match` / `ETag`, and `If-Modified-Since` and `Last-Modified`. It should be referenced after setting one or more of these response headers.
-
+检查请求缓存是否“新鲜”，也就是内容没有改变。此方法用于 `If-None-Match` / `ETag`, 和 `If-Modified-Since` 和 `Last-Modified` 之间的缓存协商。 在设置一个或多个这些响应头后应该引用它。
+  
 ```js
-// freshness check requires status 20x or 304
+// 新鲜度检查需要状态20x或304
 ctx.status = 200;
 ctx.set('ETag', '123');
 
-// cache is ok
+// 缓存是好的
 if (ctx.fresh) {
   ctx.status = 304;
   return;
 }
 
-// cache is stale
-// fetch new data
+// 缓存是陈旧的
+// 获取新数据
 ctx.body = await db.find('something');
 ```
 
 ### request.stale
 
-  Inverse of `request.fresh`.
+相反与 `request.fresh`.
 
 ### request.protocol
 
-  Return request protocol, "https" or "http". Supports `X-Forwarded-Proto`
-  when `app.proxy` is __true__.
+返回请求协议，“https” 或 “http”。当 `app.proxy` 是 __true__ 时支持  `X-Forwarded-Proto`。
 
 ### request.secure
 
-  Shorthand for `ctx.protocol == "https"` to check if a request was
-  issued via TLS.
+通过 `ctx.protocol == "https"` 来检查请求是否通过 TLS 发出。
 
 ### request.ip
 
-  Request remote address. Supports `X-Forwarded-For` when `app.proxy`
-  is __true__.
+请求远程地址。 当 `app.proxy` 是 __true__ 时支持  `X-Forwarded-Proto`。
 
 ### request.ips
 
-  When `X-Forwarded-For` is present and `app.proxy` is enabled an array
-  of these ips is returned, ordered from upstream -> downstream. When disabled
-  an empty array is returned.
+当 `X-Forwarded-For` 存在并且 `app.proxy` 被启用时，这些 ips 的数组被返回，从上游 - >下游排序。 禁用时返回一个空数组。
 
 ### request.subdomains
 
-  Return subdomains as an array.
+将子域返回为数组。
 
-  Subdomains are the dot-separated parts of the host before the main domain of
-  the app. By default, the domain of the app is assumed to be the last two
-  parts of the host. This can be changed by setting `app.subdomainOffset`.
+子域是应用程序主域之前主机的点分隔部分。默认情况下，应用程序的域名假定为主机的最后两个部分。这可以通过设置 `app.subdomainOffset` 来更改。
 
-  For example, if the domain is "tobi.ferrets.example.com":
-  If `app.subdomainOffset` is not set, `ctx.subdomains` is `["ferrets", "tobi"]`.
-  If `app.subdomainOffset` is 3, `ctx.subdomains` is `["tobi"]`.
+例如，如果域名为“tobi.ferrets.example.com”：
+
+如果 `app.subdomainOffset` 未设置, `ctx.subdomains` 是 `["ferrets", "tobi"]`.
+如果 `app.subdomainOffset` 是 3, `ctx.subdomains` 是 `["tobi"]`.
 
 ### request.is(types...)
 
-  Check if the incoming request contains the "Content-Type"
-  header field, and it contains any of the give mime `type`s.
-  If there is no request body, `null` is returned.
-  If there is no content type, or the match fails `false` is returned.
-  Otherwise, it returns the matching content-type.
+检查传入请求是否包含 `Content-Type` 头字段， 并且包含任意的 mime `type`。
+如果没有请求主体，返回 `null`。
+如果没有内容类型，或者匹配失败，则返回 `false`。
+反之则返回匹配的 content-type。 
 
 ```js
-// With Content-Type: text/html; charset=utf-8
+// 使用 Content-Type: text/html; charset=utf-8
 ctx.is('html'); // => 'html'
 ctx.is('text/html'); // => 'text/html'
 ctx.is('text/*', 'text/html'); // => 'text/html'
 
-// When Content-Type is application/json
+// 当 Content-Type 是 application/json 时
 ctx.is('json', 'urlencoded'); // => 'json'
 ctx.is('application/json'); // => 'application/json'
 ctx.is('html', 'application/*'); // => 'application/json'
@@ -229,37 +213,36 @@ ctx.is('html', 'application/*'); // => 'application/json'
 ctx.is('html'); // => false
 ```
 
-  For example if you want to ensure that
-  only images are sent to a given route:
+例如，如果要确保仅将图像发送到给定路由：
 
 ```js
 if (ctx.is('image/*')) {
-  // process
+  // 处理
 } else {
   ctx.throw(415, 'images only!');
 }
 ```
 
-### Content Negotiation
+### 内容协商
 
-  Koa's `request` object includes helpful content negotiation utilities powered by [accepts](http://github.com/expressjs/accepts) and [negotiator](https://github.com/federomero/negotiator). These utilities are:
+Koa的 `request` 对象包括由 [accepts](http://github.com/expressjs/accepts) 和 [negotiator](https://github.com/federomero/negotiator) 提供的有用的内容协商实体。
+
+这些实用程序是：
 
 - `request.accepts(types)`
 - `request.acceptsEncodings(types)`
 - `request.acceptsCharsets(charsets)`
 - `request.acceptsLanguages(langs)`
 
-If no types are supplied, __all__ acceptable types are returned.
+如果没有提供类型，则返回 __所有__ 可接受的类型。
 
-If multiple types are supplied, the best match will be returned. If no matches are found, a `false` is returned, and you should send a `406 "Not Acceptable"` response to the client.
+如果提供多种类型，将返回最佳匹配。 如果没有找到匹配项，则返回一个`false`，你应该向客户端发送一个`406 "Not Acceptable"` 响应。
 
-In the case of missing accept headers where any type is acceptable, the first type will be returned. Thus, the order of types you supply is important.
+如果接收到任何类型的接收头，则会返回第一个类型。 因此，你提供的类型的顺序很重要。
 
 ### request.accepts(types)
 
-  Check if the given `type(s)` is acceptable, returning the best match when true, otherwise `false`. The `type` value may be one or more mime type string
-  such as "application/json", the extension name
-  such as "json", or an array `["json", "html", "text/plain"]`.
+检查给定的 `type(s)` 是否可以接受，如果 `true`，返回最佳匹配，否则为 `false`。 `type` 值可能是一个或多个 mime 类型的字符串，如 `application/json`，扩展名称如 `json`，或数组 `["json", "html", "text/plain"]`。
 
 ```js
 // Accept: text/html
@@ -293,8 +276,7 @@ ctx.accepts('json', 'html');
 // => "json"
 ```
 
-  You may call `ctx.accepts()` as many times as you like,
-  or use a switch:
+你可以根据需要多次调用 `ctx.accepts()`，或使用 switch：
 
 ```js
 switch (ctx.accepts('json', 'html', 'text')) {
@@ -307,7 +289,7 @@ switch (ctx.accepts('json', 'html', 'text')) {
 
 ### request.acceptsEncodings(encodings)
 
-  Check if `encodings` are acceptable, returning the best match when true, otherwise `false`. Note that you should include `identity` as one of the encodings!
+检查 `encodings` 是否可以接受，返回最佳匹配为 `true`，否则为 `false`。 请注意，您应该将`identity` 作为编码之一！
 
 ```js
 // Accept-Encoding: gzip
@@ -318,8 +300,7 @@ ctx.acceptsEncodings(['gzip', 'deflate', 'identity']);
 // => "gzip"
 ```
 
-  When no arguments are given all accepted encodings
-  are returned as an array:
+当没有给出参数时，所有接受的编码将作为数组返回：
 
 ```js
 // Accept-Encoding: gzip, deflate
@@ -327,12 +308,11 @@ ctx.acceptsEncodings();
 // => ["gzip", "deflate", "identity"]
 ```
 
-  Note that the `identity` encoding (which means no encoding) could be unacceptable if the client explicitly sends `identity;q=0`. Although this is an edge case, you should still handle the case where this method returns `false`.
+请注意，如果客户端显式地发送 `identity;q=0`，那么 `identity` 编码（这意味着没有编码）可能是不可接受的。 虽然这是一个边缘的情况，你仍然应该处理这种方法返回 `false` 的情况。
 
 ### request.acceptsCharsets(charsets)
 
-  Check if `charsets` are acceptable, returning
-  the best match when true, otherwise `false`.
+检查 `charsets` 是否可以接受，在 `true` 时返回最佳匹配，否则为 `false`。
 
 ```js
 // Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5
@@ -343,8 +323,7 @@ ctx.acceptsCharsets(['utf-7', 'utf-8']);
 // => "utf-8"
 ```
 
-  When no arguments are given all accepted charsets
-  are returned as an array:
+当没有参数被赋予所有被接受的字符集将作为数组返回：
 
 ```js
 // Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5
@@ -354,8 +333,7 @@ ctx.acceptsCharsets();
 
 ### request.acceptsLanguages(langs)
 
-  Check if `langs` are acceptable, returning
-  the best match when true, otherwise `false`.
+检查 `langs` 是否可以接受，如果为 `true`，返回最佳匹配，否则为 `false`。
 
 ```js
 // Accept-Language: en;q=0.8, es, pt
@@ -366,8 +344,7 @@ ctx.acceptsLanguages(['en', 'es']);
 // => "es"
 ```
 
-  When no arguments are given all accepted languages
-  are returned as an array:
+当没有参数被赋予所有接受的语言将作为数组返回：
 
 ```js
 // Accept-Language: en;q=0.8, es, pt
@@ -377,12 +354,12 @@ ctx.acceptsLanguages();
 
 ### request.idempotent
 
-  Check if the request is idempotent.
+检查请求是否是幂等的。
 
 ### request.socket
 
-  Return the request socket.
+返回请求套接字。
 
 ### request.get(field)
 
-  Return request header.
+返回请求标头。
