@@ -100,12 +100,12 @@ app.listen(3000);
 
 ## app.listen(...)
 
-  A Koa application is not a 1-to-1 representation of an HTTP server.
-  One or more Koa applications may be mounted together to form larger
-  applications with a single HTTP server.
+Koa 应用程序不是 HTTP 服务器的1对1展现。
+可以将一个或多个 Koa 应用程序安装在一起以形成具有单个HTTP服务器的更大应用程序。
 
-  Create and return an HTTP server, passing the given arguments to
-  `Server#listen()`. These arguments are documented on [nodejs.org](http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback). The following is a useless Koa application bound to port `3000`:
+创建并返回 HTTP 服务器，将给定的参数传递给 `Server#listen()`。这些内容都记录在 [nodejs.org](http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback). 
+
+以下是一个无作用的 Koa 应用程序被绑定到 `3000` 端口：
 
 ```js
 const Koa = require('koa');
@@ -113,7 +113,7 @@ const app = new Koa();
 app.listen(3000);
 ```
 
-  The `app.listen(...)` method is simply sugar for the following:
+这里的 `app.listen(...)` 方法只是以下方法的语法糖:
 
 ```js
 const http = require('http');
@@ -122,8 +122,7 @@ const app = new Koa();
 http.createServer(app.callback()).listen(3000);
 ```
 
-  This means you can spin up the same application as both HTTP and HTTPS
-  or on multiple addresses:
+这意味着您可以将同一个应用程序同时作为 HTTP 和 HTTPS 或多个地址：
 
 ```js
 const http = require('http');
@@ -136,31 +135,26 @@ https.createServer(app.callback()).listen(3001);
 
 ## app.callback()
 
-  Return a callback function suitable for the `http.createServer()`
-  method to handle a request.
-  You may also use this callback function to mount your koa app in a
-  Connect/Express app.
+返回适用于 `http.createServer()` 方法的回调函数来处理请求。你也可以使用此回调函数将 koa 应用程序挂载到 Connect/Express 应用程序中。
 
 ## app.use(function)
 
-  Add the given middleware function to this application. See [Middleware](https://github.com/koajs/koa/wiki#middleware) for
-  more information.
+将给定的中间件方法添加到此应用程序。参阅 [Middleware](https://github.com/koajs/koa/wiki#middleware) 获取更多信息.
 
 ## app.keys=
 
- Set signed cookie keys.
+设置签名的 Cookie 密钥。
 
- These are passed to [KeyGrip](https://github.com/jed/keygrip),
- however you may also pass your own `KeyGrip` instance. For
- example the following are acceptable:
+这些被传递给 [KeyGrip](https://github.com/jed/keygrip)，但是你也可以传递你自己的 `KeyGrip` 实例。
+
+例如，以下是可以接受的：
 
 ```js
 app.keys = ['im a newer secret', 'i like turtle'];
 app.keys = new KeyGrip(['im a newer secret', 'i like turtle'], 'sha256');
 ```
 
-  These keys may be rotated and are used when signing cookies
-  with the `{ signed: true }` option:
+这些密钥可以倒换，并在使用 `{ signed: true }` 参数签名 Cookie 时使用。
 
 ```js
 ctx.cookies.set('name', 'tobi', { signed: true });
@@ -168,13 +162,9 @@ ctx.cookies.set('name', 'tobi', { signed: true });
 
 ## app.context
 
-  `app.context` is the prototype from which `ctx` is created from.
-  You may add additional properties to `ctx` by editing `app.context`.
-  This is useful for adding properties or methods to `ctx` to be used across your entire app,
-  which may be more performant (no middleware) and/or easier (fewer `require()`s)
-  at the expense of relying more on `ctx`, which could be considered an anti-pattern.
+`app.context` 是从其创建 `ctx` 的原型。您可以通过编辑 `app.context` 为 `ctx` 添加其他属性。这对于将 `ctx` 添加到整个应用程序中使用的属性或方法非常有用，这可能会更加有效（不需要中间件）和/或 更简单（更少的 `require()`），而更多地依赖于`ctx`，这可以被认为是一种反模式。
 
-  For example, to add a reference to your database from `ctx`:
+例如，要从 `ctx` 添加对数据库的引用：
 
 ```js
 app.context.db = db();
@@ -184,10 +174,10 @@ app.use(async ctx => {
 });
 ```
 
-Note:
+注意:
 
-- Many properties on `ctx` are defined using getters, setters, and `Object.defineProperty()`. You can only edit these properties (not recommended) by using `Object.defineProperty()` on `app.context`. See https://github.com/koajs/koa/issues/652.
-- Mounted apps currently use its parent's `ctx` and settings. Thus, mounted apps are really just groups of middleware.
+- `ctx` 上的许多属性都是使用 `getter` ，`setter` 和 `Object.defineProperty()` 定义的。你只能通过在 `app.context` 上使用 `Object.defineProperty()` 来编辑这些属性（不推荐）。查阅 https://github.com/koajs/koa/issues/652.
+- 安装的应用程序目前使用其父级的 `ctx` 和设置。 因此，安装的应用程序只是一组中间件。
 
 ## 错误处理
 
@@ -209,9 +199,4 @@ app.on('error', (err, ctx) => {
 });
 ```
 
-当发生错误 _并且_ 仍然可以响应客户端时，
-也没有数据已经写入插座，
-Koa将对500个“内部服务器错误”进行适当的响应。
-在任一情况下，为了记录目的，都会发出应用级“错误”。
-
-When an error occurs _and_ it is still possible to respond to the client, aka no data has been written to the socket, Koa will respond appropriately with a 500 "Internal Server Error". In either case an app-level "error" is emitted for logging purposes.
+当发生错误 _并且_ 仍然可以响应客户端时，也没有数据被写入 socket 中，Koa 将用一个 500 “内部服务器错误” 进行适当的响应。在任一情况下，为了记录目的，都会发出应用级 “错误”。
