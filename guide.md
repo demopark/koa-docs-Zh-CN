@@ -1,7 +1,7 @@
 
 # 指南
 
-本指南涵盖的 Koa 主题不与 API 直接相关，例如编写中间件的最佳做法和应用程序结构建议。在这些例子中，我们使用 async 函数作为中间件 - 您也可以使用 commonFunction 或generatorFunction，这将些所不同。
+本指南涵盖的 Koa 主题不与 API 直接相关，例如编写中间件的最佳做法和应用程序结构建议。在这些例子中，我们使用 async 函数作为中间件 - 您也可以使用 commonFunction 或 generatorFunction，两者有些许不同。
 
 ## 编写中间件
 
