@@ -9,9 +9,9 @@
   
 > 此项目同步自 [koajs](https://github.com/koajs) / [koa](https://github.com/koajs/koa) 项目中的  docs. 除特殊情况, 将保持每月一次的同步频率.
 
-用 node.js 来实现 HTTP 的中间件框架，让 Web 应用程序和 API 可以更加愉快地编写。Koa 的中间件堆栈以类似堆栈的方式流动，允许您执行下游操作，然后过滤并操纵上游的响应。
+Koa 通过 node.js 实现了一个十分具有表现力的 HTTP 中间件框架，力求让 Web 应用开发和 API 使用更加地愉快。Koa 的中间件之间按照编码顺序在栈内依次执行，允许您执行操作并向下传递请求（downstream），之后过滤并逆序返回响应（upstream）。
 
-几乎所有 HTTP 服务器通用的方法都被直接集成到 Koa 大约570行源码的代码库中。其中包括比如内容协商，规范节点不一致性，重定向等其它操作。
+几乎所有 HTTP 服务器通用的方法都被直接集成到 Koa 大约570行源码的代码库中。其中包括内容协商，节点不一致性的规范化，重定向等等操作。
 
 Koa没有捆绑任何中间件。
 
@@ -46,12 +46,12 @@ app.listen(3000);
 
 ## 中间件
 
-Koa 是一个中间件框架，可以将两种不同的功能作为中间件：
+Koa 是一个中间件框架，可以采用两种不同的方法来实现中间件：
 
   * async function
   * common function
 
-以下是每个不同功能记录器的中间件示例：
+以下是使用两种不同方法实现一个日志中间件的示例：
 
 ### ___async___ functions (node v7.6+)
 
@@ -67,7 +67,7 @@ app.use(async (ctx, next) => {
 ### Common function
 
 ```js
-// 中间件通常带有两个参数 (ctx, next), ctx 是一个请求的上下文,
+// 中间件通常带有两个参数 (ctx, next), ctx 是一个请求的上下文（context）,
 // next 是调用执行下游中间件的函数. 在代码执行完成后通过 then 方法返回一个 Promise.
 
 app.use((ctx, next) => {
@@ -113,7 +113,7 @@ Koa提供了一个 `Response` 对象作为 `Context` 的 `response` 属性。
 Koa的 `Response` 对象提供了用于处理 http 响应的方法，该响应委托给 [ServerResponse](https://nodejs.org/api/http.html#http_class_http_serverresponse)。
 
 Koa 对 Node 的请求和响应对象进行委托而不是扩展它们。这种模式提供了更清晰的接口，并减少了不同中间件与 Node 本身之间的冲突，并为流处理提供了更好的支持。
-`IncomingMessage` 仍然可以直接被访问，因为 `Context` 和 `ServerResponse` 上的 `req` 属性可以直接作为 `Context` 上的 `res` 属性访问。
+`IncomingMessage` 仍然可以作为 `Context` 上的 `req` 属性被直接访问，并且`ServerResponse`也可以作为`Context` 上的 `res` 属性被直接访问。
 
 这里是一个使用 Koa 的 `Response` 对象将文件作为响应体流式传输的示例。
 
@@ -132,9 +132,9 @@ app.use(async (ctx, next) => {
 
 ## Koa 应用程序
 
-在执行 `new Koa()` 时创建的对象被称为 Koa 应用程序对象。
+在执行 `new Koa()` 时创建的对象被称为 Koa 应用对象。
 
-应用对象是 Koa 与 node 的 http 服务器和处理中间件注册的接口，从 http 发送到中间件，默认错误处理，以及上下文，请求和响应对象的配置。
+应用对象是带有 node http 服务的 Koa 接口，它可以处理中间件的注册，将http请求分发到中间件，进行默认错误处理，以及对上下文，请求和响应对象进行配置。
 
 了解有关应用程序对象的更多信息请到 [应用 API 参考](api/index.md).
 
