@@ -1,7 +1,7 @@
 # Koa 与 Express
 
 在理念上，Koa 旨在 “修复和替换节点”，而 Express 旨在 “增加节点”。
-Koa 使用承诺和异步功能来摆脱回调地狱的应用程序，并简化错误处理。
+Koa 使用Promise(JavaScript一种异步手段)和异步功能来摆脱回调地狱的应用程序，并简化错误处理。
 它暴露了自己的 `ctx.request` 和 `ctx.response` 对象，而不是 node 的 `req` 和 `res` 对象。
 
 另一方面，Express 通过附加的属性和方法增加了 node 的 `req` 和 `res` 对象，并且包含许多其他 “框架” 功能，如路由和模板，而 Koa 则没有。
