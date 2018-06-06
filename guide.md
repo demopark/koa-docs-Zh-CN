@@ -211,7 +211,6 @@ app.use(publicFiles);
 ```
 
 现在，在调试时不只会看到  “serve”，你也会看到：
-  Now, instead of just seeing "serve" when debugging, you will see:
 
 ```
   koa:application use static /public +0ms
