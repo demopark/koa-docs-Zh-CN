@@ -182,7 +182,7 @@ app.use(async function (ctx, next) {
 });
 ```
 
-## 调试 Koa
+# 调试 Koa
 
 Koa 以及许多构建库，支持来自 [debug](https://github.com/visionmedia/debug) 的 __DEBUG__ 环境变量，它提供简单的条件记录。
 
