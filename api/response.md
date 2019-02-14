@@ -117,6 +117,16 @@ __注意__: 不用太在意记住这些字符串, 如果你写错了,可以查�
 
 如果 `response.status` 未被设置, Koa 将会自动设置状态为 `200` 或 `204`。
 
+Koa 没有防范作为响应体的所有内容 - 函数没有有意义地序列化，返回布尔值可能会根据您的应用程序而有意义。并且当错误生效时，它可能无法正常工作 错误的属性无法枚举。 我们建议在您的应用中添加中间件，以确定每个应用的正文类型。 示例中间件可能是：
+
+```
+app.use(async (ctx, next) => {
+  await next()
+
+  ctx.assert.equal('object', typeof ctx, 500, '某些开发错误')
+})
+```
+
 #### String
 
 Content-Type 默认为 `text/html` 或 `text/plain`, 同时默认字符集是 utf-8。Content-Length 字段也是如此。
@@ -181,6 +191,8 @@ ctx.set({
   'Last-Modified': date
 });
 ```
+
+这将委托给 [setHeader](https://nodejs.org/dist/latest/docs/api/http.html#http_request_setheader_name_value) ，它通过指定的键设置或更新标头，并且不重置整个标头。
 
 ### response.remove(field)
 
@@ -251,9 +263,9 @@ ctx.redirect('/cart');
 ctx.body = 'Redirecting to shopping cart';
 ```
 
-### response.attachment([filename])
+### response.attachment([filename], [options])
 
-将 `Content-Disposition` 设置为 “附件” 以指示客户端提示下载。(可选)指定下载的 `filename`。
+将 `Content-Disposition` 设置为 “附件” 以指示客户端提示下载。(可选)指定下载的 `filename` 和部分 [参数](https://github.com/jshttp/content-disposition#options)。
 
 ### response.headerSent
 

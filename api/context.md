@@ -54,6 +54,10 @@ ctx.state.user = await User.find(id);
 ### ctx.app
 
   应用程序实例引用
+  
+### ctx.app.emit
+
+  Koa 应用扩展了内部 [EventEmitter](https://nodejs.org/dist/latest-v11.x/docs/api/events.html)。`ctx.app.emit` 发出一个类型由第一个参数定义的事件。对于每个事件，您可以连接 "listeners"，这是在发出事件时调用的函数。有关更多信息，请参阅[错误处理文档](https://koajs.com/#error-handling)。
 
 ### ctx.cookies.get(name, [options])
 
@@ -107,7 +111,7 @@ throw err;
 ctx.throw(401, 'access_denied', { user: user });
 ```
 
-koa 使用 [http-errors](https://github.com/jshttp/http-errors) 来创建错误。
+koa 使用 [http-errors](https://github.com/jshttp/http-errors) 来创建错误。`status` 只应作为第一个参数传递。
 
 ### ctx.assert(value, [status], [msg], [properties])
 
