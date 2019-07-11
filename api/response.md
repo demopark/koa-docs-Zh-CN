@@ -14,7 +14,7 @@ Koa `Response` 对象是在 node 的 vanilla 响应对象之上的抽象，提�
 
 ### response.socket
 
-请求套接字。
+响应套接字。
 
 ### response.status
 
