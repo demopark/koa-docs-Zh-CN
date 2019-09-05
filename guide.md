@@ -171,7 +171,7 @@ Async 方法和 promise 来自 Koa 的底层，可以让你编写非阻塞序列
 
 
 ```js
-const fs = require('fs-promise');
+const fs = require('mz/fs');
 
 app.use(async function (ctx, next) {
   const paths = await fs.readdir('docs');

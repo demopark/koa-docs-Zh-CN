@@ -94,8 +94,24 @@ app.listen(3000);
 应用程序设置是 `app` 实例上的属性，目前支持如下：
 
   - `app.env` 默认是 __NODE_ENV__ 或 "development"
+  - `app.keys` 签名的 cookie 密钥数组
   - `app.proxy` 当真正的代理头字段将被信任时
   - `app.subdomainOffset` 对于要忽略的 `.subdomains` 偏移[2]
+
+您可以将设置传递给构造函数:
+
+  ```js
+  const Koa = require('koa');
+  const app = new Koa({ proxy: true });
+  ```
+  
+或动态的:
+  
+  ```js
+  const Koa = require('koa');
+  const app = new Koa();
+  app.proxy = true;
+  ```
 
 ## app.listen(...)
 
@@ -144,7 +160,7 @@ https.createServer(app.callback()).listen(3001);
 
 设置签名的 Cookie 密钥。
 
-这些被传递给 [KeyGrip](https://github.com/jed/keygrip)，但是你也可以传递你自己的 `KeyGrip` 实例。
+这些被传递给 [KeyGrip](https://github.com/crypto-utils/keygrip)，但是你也可以传递你自己的 `KeyGrip` 实例。
 
 例如，以下是可以接受的：
 

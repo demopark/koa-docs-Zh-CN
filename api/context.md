@@ -65,7 +65,7 @@ ctx.state.user = await User.find(id);
 
  - `signed` 所请求的cookie应该被签名
 
-koa 使用 [cookies](https://github.com/jed/cookies) 模块，其中只需传递参数。
+koa 使用 [cookies](https://github.com/pillarjs/cookies) 模块，其中只需传递参数。
 
 ### ctx.cookies.set(name, value, [options])
 
@@ -80,7 +80,7 @@ koa 使用 [cookies](https://github.com/jed/cookies) 模块，其中只需传递
  - `httpOnly` 服务器可访问 cookie,  默认是 __true__
  - `overwrite` 一个布尔值，表示是否覆盖以前设置的同名的 cookie (默认是 __false__). 如果是 true, 在同一个请求中设置相同名称的所有 Cookie（不管路径或域）是否在设置此Cookie 时从 Set-Cookie 标头中过滤掉。
 
-koa 使用传递简单参数的 [cookies](https://github.com/jed/cookies) 模块。
+koa 使用传递简单参数的 [cookies](https://github.com/pillarjs/cookies) 模块。
 
 ### ctx.throw([status], [msg], [properties])
 

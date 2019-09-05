@@ -6,7 +6,7 @@ Koa `Request ` 对象是在 node 的 vanilla 请求对象之上的抽象，提�
 
 ### request.header
 
-请求标头对象。
+请求标头对象。这与 node [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_class_http_incomingmessage) 上的 [`headers`](https://nodejs.org/api/http.html#http_message_headers) 字段相同
 
 ### request.header=
 
@@ -362,4 +362,4 @@ ctx.acceptsLanguages();
 
 ### request.get(field)
 
-返回请求标头。
+返回请求标头。不区 `field` 的分大小写.

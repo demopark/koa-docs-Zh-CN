@@ -125,7 +125,7 @@ app.use(async (ctx, next) => {
 });
 ```
 
-`Context` 对象还提供了其 `request` 和 `response` 方法的快捷方式。在前面的例子中，可以使用 `ctx.type` 而不是 `ctx.request.type`，而 `ctx.accepts` 可以用来代替 `ctx.request.accepts`。
+`Context` 对象还提供了其 `request` 和 `response` 方法的快捷方式。在前面的例子中，可以使用 `ctx.type` 而不是 `ctx.response.type`，而 `ctx.accepts` 可以用来代替 `ctx.request.accepts`。
 
 关于 `Request`, `Response` 和 `Context` 更多详细信息, 参阅 [请求 API 参考](api/request.md),
 [响应 API 参考](api/response.md) 和 [上下文 API 参考](api/context.md).
