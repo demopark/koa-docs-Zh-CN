@@ -192,7 +192,7 @@ $ npm test
 ```
 
 # 赞赏支持
-![赞赏支持](https://github.com/demopark/electron-api-demos-Zh_CN/blob/master/assets/img/td.png)
+![赞赏支持](https://raw.githubusercontent.com/demopark/electron-api-demos-Zh_CN/master/assets/img/td.png)
 
 [npm-image]: https://img.shields.io/npm/v/koa.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/koa
