@@ -165,6 +165,16 @@ Content-Type 默认为 `application/json`. 这包括普通的对象 `{ foo: 'bar
 const etag = ctx.response.get('ETag');
 ```
 
+### response.has(field)
+
+如果当前在传出标头中设置了由名称标识的标头，则返回 `true`.
+标头名称匹配不区分大小写.
+
+```js
+const rateLimited = ctx.response.has('X-RateLimit-Limit');
+```
+
+
 ### response.set(field, value)
 
 设置响应标头 `field` 到 `value`:
