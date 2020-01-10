@@ -181,6 +181,33 @@ ctx.body = await db.find('something');
 
 当 `X-Forwarded-For` 存在并且 `app.proxy` 被启用时，这些 ips 的数组被返回，从上游 - >下游排序。 禁用时返回一个空数组。
 
+例如，如果值是 "client, proxy1, proxy2"，将会得到数组 `["client", "proxy1", "proxy2"]`。
+
+大多数反向代理（nginx）都通过 `proxy_add_x_forwarded_for` 设置了 x-forwarded-for，这带来了一定的安全风险。恶意攻击者可以通过伪造 `X-Forwarded-For` 请求标头来伪造客户端的ip地址。 客户端发送的请求具有 'forged' 的 `X-Forwarded-For` 请求标头。 在由反向代理转发之后，`request.ips` 将是 ['forged', 'client', 'proxy1', 'proxy2']。
+
+Koa 提供了两种方式来避免被绕过。
+
+如果您可以控制反向代理，则可以通过调整配置来避免绕过，或者使用 koa 提供的 `app.proxyIpHeader` 来避免读取 `x-forwarded-for` 获取 ips。
+
+```js
+const app = new Koa({
+  proxy: true,
+  proxyIpHeader: 'X-Real-IP',
+});
+```
+
+如果您确切知道服务器前面有多少个反向代理，则可以通过配置 `app.maxIpsCount` 来避免读取用户的伪造的请求标头：
+
+```js
+const app = new Koa({
+  proxy: true,
+  maxIpsCount: 1, // 服务器前只有一个代理
+});
+
+// request.header['X-Forwarded-For'] === [ '127.0.0.1', '127.0.0.2' ];
+// ctx.ips === [ '127.0.0.2' ];
+```
+
 ### request.subdomains
 
 将子域返回为数组。
