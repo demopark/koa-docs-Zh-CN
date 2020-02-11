@@ -78,13 +78,13 @@ koa 使用 [cookies](https://github.com/pillarjs/cookies) 模块，其中只需�
  - `domain` cookie 域名
  - `secure` 安全 cookie
  - `httpOnly` 服务器可访问 cookie,  默认是 __true__
- - `overwrite` 一个布尔值，表示是否覆盖以前设置的同名的 cookie (默认是 __false__). 如果是 true, 在同一个请求中设置相同名称的所有 Cookie（不管路径或域）是否在设置此Cookie 时从 Set-Cookie 标头中过滤掉。
+ - `overwrite` 一个布尔值，表示是否覆盖以前设置的同名的 cookie (默认是 __false__). 如果是 true, 在同一个请求中设置相同名称的所有 Cookie（不管路径或域）是否在设置此Cookie 时从 Set-Cookie 消息头中过滤掉。
 
 koa 使用传递简单参数的 [cookies](https://github.com/pillarjs/cookies) 模块。
 
 ### ctx.throw([status], [msg], [properties])
 
-Helper 方法抛出一个 `.status` 属性默认为 `500` 的错误，这将允许 Koa 做出适当地响应。
+用来抛出一个包含 `.status` 属性错误的帮助方法，其默认值为 `500`。这样 Koa 就可以做出适当地响应。
 
 允许以下组合：
 
@@ -115,7 +115,7 @@ koa 使用 [http-errors](https://github.com/jshttp/http-errors) 来创建错误�
 
 ### ctx.assert(value, [status], [msg], [properties])
 
-当 `!value` 时，Helper 方法抛出类似于 `.throw()` 的错误。这与 node 的 [assert()](http://nodejs.org/api/assert.html) 方法类似.
+当 `!value` 时抛出一个类似 `.throw` 错误的帮助方法。这与 node 的 [assert()](http://nodejs.org/api/assert.html) 方法类似.
 
 ```js
 ctx.assert(ctx.state.user, 401, 'User not found. Please login!');

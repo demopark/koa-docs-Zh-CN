@@ -1,24 +1,24 @@
 # 请求(Request)
 
-Koa `Request ` 对象是在 node 的 vanilla 请求对象之上的抽象，提供了诸多对 HTTP 服务器开发有用的功能。
+Koa `Request ` 对象是在 node 的 原生请求对象之上的抽象，提供了诸多对 HTTP 服务器开发有用的功能。
 
 ## API
 
 ### request.header
 
-请求标头对象。这与 node [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_class_http_incomingmessage) 上的 [`headers`](https://nodejs.org/api/http.html#http_message_headers) 字段相同
+请求头对象。这与 node [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_class_http_incomingmessage) 上的 [`headers`](https://nodejs.org/api/http.html#http_message_headers) 字段相同
 
 ### request.header=
 
-设置请求标头对象。
+设置请求头对象。
 
 ### request.headers
 
-请求标头对象。别名为 `request.header`.
+请求头对象。别名为 `request.header`.
 
 ### request.headers=
 
-设置请求标头对象。别名为 `request.header=`.
+设置请求头对象。别名为 `request.header=`.
 
 ### request.method
 
@@ -88,7 +88,7 @@ ctx.request.href;
 
 ### request.host
 
-获取当前主机（hostname:port）。当 `app.proxy` 是 __true__ 时支持 `X-Forwarded-Host`，否则使用 `Host`。
+存在时获取主机（hostname:port）。当 `app.proxy` 是 __true__ 时支持 `X-Forwarded-Host`，否则使用 `Host`。
 
 ### request.hostname
 
@@ -104,7 +104,9 @@ ctx.request.href;
 
 ### request.type
 
-获取请求 `Content-Type` 不含参数 "charset"。
+获取请求 `Content-Type`, 不含 "charset" 等参数。
+
+> 译者注: 这里其实是只获取 _mime-type_, 详见[源码及其注释](https://github.com/koajs/koa/blob/eda27608f7d39ede86d7b402aae64b1867ce31c6/lib/request.js#L639)
 
 ```js
 const ct = ctx.request.type;
@@ -113,7 +115,7 @@ const ct = ctx.request.type;
 
 ### request.charset
 
-在存在时获取请求字符集，或者 `undefined`：
+存在时获取请求字符集，或者 `undefined`：
 
 ```js
 ctx.request.charset;
@@ -163,7 +165,7 @@ ctx.body = await db.find('something');
 
 ### request.stale
 
-相反与 `request.fresh`.
+与 `request.fresh` 相反.
 
 ### request.protocol
 
@@ -183,7 +185,7 @@ ctx.body = await db.find('something');
 
 例如，如果值是 "client, proxy1, proxy2"，将会得到数组 `["client", "proxy1", "proxy2"]`。
 
-大多数反向代理（nginx）都通过 `proxy_add_x_forwarded_for` 设置了 x-forwarded-for，这带来了一定的安全风险。恶意攻击者可以通过伪造 `X-Forwarded-For` 请求标头来伪造客户端的ip地址。 客户端发送的请求具有 'forged' 的 `X-Forwarded-For` 请求标头。 在由反向代理转发之后，`request.ips` 将是 ['forged', 'client', 'proxy1', 'proxy2']。
+大多数反向代理（nginx）都通过 `proxy_add_x_forwarded_for` 设置了 x-forwarded-for，这带来了一定的安全风险。恶意攻击者可以通过伪造 `X-Forwarded-For` 请求头来伪造客户端的ip地址。 客户端发送的请求具有 'forged' 的 `X-Forwarded-For` 请求头。 在由反向代理转发之后，`request.ips` 将是 ['forged', 'client', 'proxy1', 'proxy2']。
 
 Koa 提供了两种方式来避免被绕过。
 
@@ -196,7 +198,7 @@ const app = new Koa({
 });
 ```
 
-如果您确切知道服务器前面有多少个反向代理，则可以通过配置 `app.maxIpsCount` 来避免读取用户的伪造的请求标头：
+如果您确切知道服务器前面有多少个反向代理，则可以通过配置 `app.maxIpsCount` 来避免读取用户的伪造的请求头：
 
 ```js
 const app = new Koa({
@@ -210,7 +212,7 @@ const app = new Koa({
 
 ### request.subdomains
 
-将子域返回为数组。
+以数组形式返回子域。
 
 子域是应用程序主域之前主机的点分隔部分。默认情况下，应用程序的域名假定为主机的最后两个部分。这可以通过设置 `app.subdomainOffset` 来更改。
 
@@ -221,7 +223,7 @@ const app = new Koa({
 
 ### request.is(types...)
 
-检查传入请求是否包含 `Content-Type` 头字段， 并且包含任意的 mime `type`。
+检查传入请求是否包含 `Content-Type` 消息头字段， 并且包含任意的 mime `type`。
 如果没有请求主体，返回 `null`。
 如果没有内容类型，或者匹配失败，则返回 `false`。
 反之则返回匹配的 content-type。 
@@ -252,9 +254,9 @@ if (ctx.is('image/*')) {
 
 ### 内容协商
 
-Koa的 `request` 对象包括由 [accepts](http://github.com/expressjs/accepts) 和 [negotiator](https://github.com/federomero/negotiator) 提供的有用的内容协商实体。
+Koa 的 `request` 对象包括由 [accepts](http://github.com/expressjs/accepts) 和 [negotiator](https://github.com/federomero/negotiator) 提供的内容协商实用函数。
 
-这些实用程序是：
+这些实用函数是：
 
 - `request.accepts(types)`
 - `request.acceptsEncodings(types)`
@@ -389,4 +391,4 @@ ctx.acceptsLanguages();
 
 ### request.get(field)
 
-返回请求标头。不区 `field` 的分大小写.
+返回请求头(header), `field` 不区分大小写.
