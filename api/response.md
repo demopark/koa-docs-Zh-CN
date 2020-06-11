@@ -85,6 +85,15 @@ Koa `Response` 对象是在 node 的原生响应对象之上的抽象，提供�
 
 __注意__: 不用太在意记住这些字符串, 如果你写错了,可以查阅这个列表随时更正.
 
+由于 `response.status` 默认设置为 `404`，因此发送没有 body 且状态不同的响应的操作如下：
+
+```js
+ctx.response.status = 200;
+
+// 或其他任何状态
+ctx.response.status = 204;
+```
+
 ### response.message
 
 获取响应的状态消息. 默认情况下, `response.message` 与 `response.status` 关联.
@@ -149,7 +158,7 @@ Content-Type 默认为 `application/octet-stream`。
 const PassThrough = require('stream').PassThrough;
 
 app.use(async ctx => {
-  ctx.body = someHTTPStream.on('error', ctx.onerror).pipe(PassThrough());
+  ctx.body = someHTTPStream.on('error', (err) => ctx.onerror(err)).pipe(PassThrough());
 });
 ```
 

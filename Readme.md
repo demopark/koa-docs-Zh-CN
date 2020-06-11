@@ -6,6 +6,7 @@
   [![Test coverage][coveralls-image]][coveralls-url]
   [![OpenCollective Backers][backers-image]](#backers)
   [![OpenCollective Sponsors][sponsors-image]](#sponsors)
+  [![PR's Welcome][pr-welcoming-image]][pr-welcoming-url]
   
 > 此项目同步自 [koajs](https://github.com/koajs) / [koa](https://github.com/koajs/koa) 项目中的  docs. 除特殊情况, 将保持每月一次的同步频率.
 
@@ -155,16 +156,22 @@ app.use(async (ctx, next) => {
 
 ## Babel 配置
 
-如果你正在使用的不是 `node v7.6+`, 我们推荐你用 [`babel-preset-env`](https://github.com/babel/babel-preset-env) 配置 `babel` :
+如果你正在使用的不是 `node v7.6+`, 我们推荐你用 [`@babel/preset-env`](https://babeljs.io/docs/en/next/babel-preset-env) 配置 `babel` :
 
 ```bash
-$ npm install babel-register babel-preset-env --save
+$ npm install @babel/register @babel/preset-env @babel/cli --save-dev
 ```
 
-在你入口文件配置 `babel-register`:
+在开发环境中, 你可能想要使用 [`@babel/register`](https://babeljs.io/docs/en/next/babel-register):
 
-```js
-require('babel-register');
+```bash
+node --require @babel/register <your-entry-file>
+```
+
+在生产环境中, 你可能想要使用 [`@babel/cli`](https://babeljs.io/docs/en/babel-cli) 构建文件. 假设你正在编译 `src` 文件夹且想要输出 non-javascript 文件拷贝到新的 `dist` 文件夹中:
+
+```bash
+babel src --out-dir dist --copy-files
 ```
 
 还有你的 `.babelrc` 配置:
@@ -172,7 +179,7 @@ require('babel-register');
 ```json
 {
   "presets": [
-    ["env", {
+    ["@babel/preset-env", {
       "targets": {
         "node": true
       }
@@ -205,3 +212,5 @@ $ npm test
 [gitter-image]: https://img.shields.io/gitter/room/koajs/koa.svg?style=flat-square
 [gitter-url]: https://gitter.im/koajs/koa?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 [#koajs]: https://webchat.freenode.net/?channels=#koajs
+[pr-welcoming-image]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[pr-welcoming-url]: https://github.com/koajs/koa/pull/new

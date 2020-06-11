@@ -156,7 +156,23 @@ https.createServer(app.callback()).listen(3001);
 
 ## app.use(function)
 
-将给定的中间件方法添加到此应用程序。参阅 [Middleware](https://github.com/koajs/koa/wiki#middleware) 获取更多信息.
+将给定的中间件方法添加到此应用程序。`app.use()` 返回 `this`, 因此可以链式表达.
+  
+```js
+app.use(someMiddleware)
+app.use(someOtherMiddleware)
+app.listen(3000)
+```
+
+它等同于
+  
+```js
+app.use(someMiddleware)
+  .use(someOtherMiddleware)
+  .listen(3000)
+```
+
+参阅 [Middleware](https://github.com/koajs/koa/wiki#middleware) 获取更多信息.
 
 ## app.keys=
 
